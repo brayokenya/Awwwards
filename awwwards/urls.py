@@ -25,8 +25,15 @@ from django_registration.backends.one_step.views import RegistrationView
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'',include('websites.urls')),
-    url(r'^accounts/', include('registration.backends.one_step.urls')),
-    url(r'^logout/$', views.logout, {"next_page": '/'}), 
+    url('accounts/register/',RegistrationView.as_view(success_url='/accounts/login/'),
+        name='django_registration_register'),
+    url('accounts/', include('django_registration.backends.one_step.urls')),
+    url('accounts/', include('django.contrib.auth.urls')),
+    url("logout/", auth_views.LogoutView.as_view()),
+    url(r'^tinymce/', include('tinymce.urls')),
+    
+
+ 
 
 
 ]

@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'bootstrap3',
     'cloudinary',
     'django_registration',
+    'tinymce',
+
     
 ]
 cloudinary.config (
@@ -146,3 +148,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+LOGIN_URL = "/accounts/login/" # this is the name of the url
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+REGISTRATION_OPEN= True
+ACCOUNT_ACTIVATION_DAYS = 5

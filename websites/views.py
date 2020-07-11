@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http  import HttpResponse, Http404
+from django.http  import HttpResponse, Http404, HttpResponseRedirect
 import datetime as dt
 from .models import Site
 from django.contrib.auth.decorators import login_required
+from .forms import NewSiteForm
+
 
 
 # Create your views here.
@@ -66,3 +68,28 @@ def site(request,site_id):
     except ObjectDoesNotExist:
         raise Http404()
     return render(request,"all-sites/site.html", {"site":site})
+
+
+@login_required(login_url='/accounts/login/')
+def new_site(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewSiteForm(request.POST, request.FILES)
+        if form.is_valid():
+            site = form.save(commit=False)
+            site.developer = current_user
+            site.save()
+        return HttpResponseRedirect('/')
+
+    else:
+        form = NewSiteForm()
+    return render(request, 'new-site.html', {"form": form})
+
+@login_required
+def profile(request, id):
+    user = User.objects.get(id=id)
+    profile = UserProfile.objects.get(user_id=user)
+    posts = Post.objects.filter(profile__id=id)[::-1]
+    return render(request, "instagram/profile.html", context={"user":user,
+                                                             "profile":profile,
+                                                             "posts":posts})

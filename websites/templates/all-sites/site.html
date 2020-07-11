@@ -9,9 +9,9 @@
     <div class="row">
         <h1 class="text-center">{{site.title}}</h1>
     </div>
-
     <div class="row">
-        <p>{{site.url}}</p>
+        {% autoescape on %} {{site.url| safe}} {% endautoescape %}
+
     </div>
 
     <div class="row">
