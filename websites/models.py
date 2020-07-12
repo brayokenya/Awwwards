@@ -7,30 +7,12 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = CloudinaryField('profile_pic')
-    bio = models.TextField(blank=True)
-    
-
-    def __str__(self):
-        return self.bio
-
-
-class Dev(models.Model):
-    first_name = models.CharField(max_length =30)
-    last_name = models.CharField(max_length =30)
-    email = models.EmailField()
     phone_number = models.CharField(max_length = 10,blank =True)
-
-
+    bio = models.TextField(blank=True)
+    is_mvp = models.BooleanField(default=False)
+    
     def __str__(self):
-        return self.first_name
-
-    def save_dev(self):
-        self.save()
-    class Meta:
-        ordering = ['first_name']
-
-    def delete_post(self):
-        self.delete()
+        return self.user.first_name
 
 
 class tags(models.Model):
@@ -46,6 +28,8 @@ class Site(models.Model):
     developer = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(tags)
     pub_date = models.DateTimeField(auto_now_add=True)
+    
+    
 
 
     @classmethod
@@ -63,3 +47,7 @@ class Site(models.Model):
     def search_by_title(cls,search_term):
         site = cls.objects.filter(title__icontains=search_term)
         return site
+    
+    def __str__(self):
+        return (self.title)
+

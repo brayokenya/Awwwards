@@ -1,0 +1,33 @@
+{%extends 'all-sites/base.html'%} {% block content %} {{block.super}}
+
+<div class="container home-pg">
+    {% for site_item in site %}
+
+    <div class="row">
+
+        <div class="col-xs-1"></div>
+        <div class="col-xs-4">
+
+            <p> <span class="text-muted">Bio: </span>{{user_bio}}</p>
+            <h5 class="text-muted">Developer: <span class="bolden">{{site_item.developer}}</span></h5>
+            <h5 class="text-muted">Profile Picture <img src="{{profile_pic.url}}"></h5>
+            <h3 class="text-muted">Sites Uploaded</h3>
+            <h4> Title: {{site_item.title}}</h4>
+        </div>
+        <div class="col-xs-4">
+            <br>
+            <h4 class="bolden">Account options</h4>
+            <ul>
+                <li>
+                    <h5><a href="{%url 'create-profile'%}">Update Profile</a></h5>
+                </li>
+
+
+                <li>
+                    <h5><a href="/logout">Log out</a></h5>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{%endfor%} {% endblock %}

@@ -15,13 +15,20 @@
                 <div class="col-sm-6 col-md-6">
                     {% if user.is_authenticated %}
                     <ul>
-                        <li class="dropdown">
+                        <li class="dropdown" style="position: relative;
+                        display: inline-block;">
                             <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-expanded="false">Account
                                   
                               </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="{%url 'siteToday'%}">Home</a>
+                                </li>
+                                <li>
+                                    <a href="{%url 'create-profile'%}">Update Profile</a>
+                                </li>
+                                <li>
+                                    <a href="{%url 'my-profile'%}">View Profile</a>
                                 </li>
                                 <li>
                                     <a href="{%url 'new-site'%}">Post Site</a>
