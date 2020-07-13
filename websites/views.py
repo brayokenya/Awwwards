@@ -1,14 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http  import HttpResponse, Http404, HttpResponseRedirect
 import datetime as dt
-from .models import Site, UserProfile
+from .models import *
+from .forms import *
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .forms import NewSiteForm,UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
-
-
-
+from django.contrib import messages
+from django.db.models import Avg
 
 
 # Create your views here.
@@ -162,13 +162,19 @@ def register(request):
 
 @login_required(login_url='/accounts/login/')
 def create_profile(request):
-    current_user = request.user
+    current_user_id = request.user.id
+    user_profile = UserProfile.objects.get(user_id=current_user_id)
     if request.method == 'POST':
+
         form = UserProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = current_user
-            profile.save()
+        if form.is_valid(): 
+
+            user_profile.profile_pic = form.cleaned_data.get('profile_pic')
+            user_profile.phone_number = form.cleaned_data.get('phone_number')
+            user_profile.bio = form.cleaned_data.get('bio')
+
+            user_profile.save()
+            messages.success(request, 'Your profile has been updated.')
         return redirect(my_profile)
 
     else:
@@ -179,19 +185,63 @@ def create_profile(request):
 
 @login_required(login_url='/accounts/login/')
 def my_profile(request):
-    current_user = request.user
-    user_profile = UserProfile.objects.get(user=current_user)
-    profile_pic = user_profile.profile_pic
-    user_bio = user_profile.bio
-
+    current_user_id = request.user.id
+    user_profile = UserProfile.objects.get(user_id=current_user_id)
     
     try:
-        profile = UserProfile.objects.filter(user = current_user)
+        profile = UserProfile.objects.get(user_id=current_user_id)
     except UserProfile.DoesNotExist:
         return redirect(create_profile)
-    site = Site.objects.filter(developer=current_user)
+    site = Site.objects.filter(developer_id=current_user_id)
     
-       
 
-    return render(request, 'my-profile.html', { "profile_pic":profile_pic,"site": site, "user_bio": user_bio},)
+    return render(request, 'my-profile.html', { "site": site, "user_profile": user_profile},)
 
+def site_rate(request, pk):
+    site = Site.objects.get(pk=pk)
+    current_user = request.user
+
+    current_user_id = request.user.id
+    # user = User.objects.get(id=current_user_id)
+
+
+    user_profile = UserProfile.objects.get(user_id=current_user_id)
+
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = RatingsForm(request.POST)
+            user = get_object_or_404(User, pk=current_user_id)
+            if form.is_valid():
+                # 'design', 'usability', 'content', 'creativity'
+                rate = Rate()
+                rate.design = form.cleaned_data.get('design')
+                rate.usability = form.cleaned_data.get('usability')
+                rate.content = form.cleaned_data.get('content')
+                rate.creativity = form.cleaned_data.get('creativity')
+                
+                # rate.post= request.POST.get('post_id')
+                rate.user= user
+
+
+                design = Rate.objects.aggregate(Avg('design'))['design__avg']
+                usability = Rate.objects.aggregate(Avg('usability'))['usability__avg']
+                content = Rate.objects.aggregate(Avg('content'))['content__avg']
+                creativity = Rate.objects.aggregate(Avg('creativity'))['creativity__avg']
+                average = Rate.objects.aggregate(Avg('average'))['average__avg']
+                rate = form.save(commit=False)
+                rate.average = (rate.design + rate.usability + rate.content + rate.creativity) / 4
+                # print(rate.average)
+               
+                rate.save()
+            return redirect('site', post)
+        else:
+            form = RatingsForm()
+        # rate = Rate.objects.get(post_id=site.id)
+        context = {
+            'site':site, 
+            'rating_form': form,
+        }
+        return render(request, 'all-sites/site.html', context)
+
+    return render(request,'all-sites/today-sites.html')
+    
