@@ -19,7 +19,7 @@ def site_today(request):
 
 
 def site_of_day(request):
-    date = dt.date.today()
+    date = dt.date.all()
     return render(request, 'all-sites/today-sites.html', {"date": date})
 
 
@@ -200,11 +200,10 @@ def my_profile(request):
 def site_rate(request, pk):
     site = Site.objects.get(pk=pk)
     current_user = request.user
-
+    user = User.objects.get(username = request.user)
+    # post = Site.objects.get(title = pk)
     current_user_id = request.user.id
     # user = User.objects.get(id=current_user_id)
-
-
     user_profile = UserProfile.objects.get(user_id=current_user_id)
 
     if request.user.is_authenticated:
@@ -218,28 +217,42 @@ def site_rate(request, pk):
                 rate.usability = form.cleaned_data.get('usability')
                 rate.content = form.cleaned_data.get('content')
                 rate.creativity = form.cleaned_data.get('creativity')
-                
-                # rate.post= request.POST.get('post_id')
-                rate.user= user
 
+                post_to_be_saved = Site.objects.get(pk=pk)
+                rate.post= post_to_be_saved
+                rating_user = User.objects.get(pk=request.user.id)
+                rate.user= rating_user
 
                 design = Rate.objects.aggregate(Avg('design'))['design__avg']
                 usability = Rate.objects.aggregate(Avg('usability'))['usability__avg']
                 content = Rate.objects.aggregate(Avg('content'))['content__avg']
                 creativity = Rate.objects.aggregate(Avg('creativity'))['creativity__avg']
                 average = Rate.objects.aggregate(Avg('average'))['average__avg']
-                rate = form.save(commit=False)
+                # rate = form.save(commit=False)
                 rate.average = (rate.design + rate.usability + rate.content + rate.creativity) / 4
-                # print(rate.average)
+                print(rate.average)
                
-                rate.save()
-            return redirect('site', post)
+                if request.user.is_authenticated:    
+                   user_id = request.user.id           
+                   has_voted = Rate.objects.all().filter(post_id=post_id,user_id=user_id)
+                   if has_voted:                
+                        messages.error(request,'You have already voted for this post')                
+                        return redirect('site_rate', site.id)                                    
+               
+                rate.save_rate()
+            return redirect('site_rate', site.id)
         else:
             form = RatingsForm()
-        # rate = Rate.objects.get(post_id=site.id)
+        
+        rate = Rate.objects.filter(post_id=site.id)
+        total_rates= Rate.objects.filter(post_id=site.id).count()
+
         context = {
             'site':site, 
             'rating_form': form,
+            'rate':rate,
+            'total_rates': total_rates
+            
         }
         return render(request, 'all-sites/site.html', context)
 
