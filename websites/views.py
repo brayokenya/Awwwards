@@ -92,7 +92,9 @@ def new_site(request):
 
     else:
         form = NewSiteForm()
-    return render(request, 'new-site.html', {"form": form})
+    
+    form = NewSiteForm()
+    return render(request, 'new-site.html', {"form":form})
 
 @login_required
 def profile(request, id):
