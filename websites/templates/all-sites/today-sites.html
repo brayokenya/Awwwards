@@ -1,20 +1,25 @@
-{%extends 'all-sites/base.html'%} {% block content %} {{block.super}}
+{%extends 'all-sites/base.html'%}  {% block content %} {{block.super}}
+
 <div class="container">
 
-    <!-- Looping through news   -->
+   <div class="row">
+
     {% for site_item in site %}
 
-    <div class="row">
-        <!-- displaying News articles -->
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <h2 class="text-center"> {{site_item.title}} </h2>
-            <p class="text-center">{{site_item.pub_date}} </p>
-            <p class="text-center">{{site_item.url}} </p>
-            <p class="text-center">{{site_item.developer}} </p>
-            <img src="{{site_item.image.url}}" class="img-responsive" alt="Image">
+    <div class="col-md-3" >
+     
+        <img class="card-img-top" src="{{site_item.image.url}}" alt="Card image cap">
+        <div class="card-body" >
+            <h5 class="card-title">{{site_item.title}}</h5>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            <p class="card-text">Developer: {{site_item.developer}}</p>
+
+            <p class="card-text">Published on: {{site_item.pub_date}}</p>
+            <a href="{{site_item.url}}" class="btn btn-info" target="_blank">Visit {{site_item.developer}}'s Site</a>
+            <a href="{% url 'site_rate' site_item.id %} " class="btn btn-secondary" target="_blank">Vote</a>
 
         </div>
-
+        
     </div>
 
     {% empty %}
@@ -22,5 +27,7 @@
         <h2 class="text-center">No featured Website for today</h2>
     </div>
     {% endfor %}
-
-</div>{% endblock %}
+    
+  </div>
+</div>
+{% endblock %}

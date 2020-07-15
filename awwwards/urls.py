@@ -20,8 +20,14 @@ from django.contrib.auth import views
 from django.contrib.auth import views as auth_views
 from django_registration.backends.one_step.views import RegistrationView
 from decouple import config, Csv
+from rest_framework import routers
+from websites.views import *
+from rest_framework.authtoken.views import obtain_auth_token
 
-
+router = routers.DefaultRouter()
+router.register(r'profiles', UserProfileViewSet)
+router.register(r'users', UserViewSet)
+router.register(r'sites', SiteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +38,8 @@ urlpatterns = [
     url('accounts/', include('django.contrib.auth.urls')),
     url("logout/", auth_views.LogoutView.as_view()),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'', include(router.urls)),
+    url(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     
 
  

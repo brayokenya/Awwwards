@@ -1,6 +1,7 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
 import datetime as dt
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -28,6 +29,11 @@ class Site(models.Model):
     developer = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(tags)
     pub_date = models.DateTimeField(auto_now_add=True)
+    design = models.IntegerField(choices=list(zip(range(0, 11), range(0, 11))), default=0)
+    content = models.IntegerField(choices=list(zip(range(0, 11), range(0, 11))), default=0)
+    usability = models.IntegerField(choices=list(zip(range(0, 11), range(0, 11))), default=0)
+    creativity = models.IntegerField(choices=list(zip(range(0, 11), range(0, 11))), default=0)
+    vote_submissions = models.IntegerField(default=0)
     
 
     @classmethod
@@ -48,4 +54,26 @@ class Site(models.Model):
     
     def __str__(self):
         return (self.title)
+
+
+    def save_site(self):
+        self.save()  
+
+class Rate(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='likes', null=True)
+    content = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    design = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    usability = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    creativity = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    average = models.IntegerField(default=0)
+
+    def save_rate(self):
+        self.save()
+
+    def delete_rate(self):
+        self.delete()
+
+    class Meta:
+        db_table = 'ratings'
 

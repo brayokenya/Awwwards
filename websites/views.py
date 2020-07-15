@@ -4,17 +4,21 @@ import datetime as dt
 from .models import *
 from .forms import *
 from django.urls import reverse
+from rest_framework.views import APIView
+from .serializer import *
 from django.contrib.auth.decorators import login_required
 from .forms import NewSiteForm,UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Avg
+from rest_framework import viewsets
+
 
 
 # Create your views here.
 def site_today(request):
     date = dt.date.today()
-    site = Site.todays_site()
+    site = Site.objects.all()[::-1]
     return render(request, 'all-sites/today-sites.html', {"date": date,"site":site})
 
 
@@ -52,6 +56,7 @@ def past_days_site(request,past_date):
     site = Site.days_site(date)
     return render(request, 'all-sites/past-sites.html',{"date": date,"site":site})
 
+@login_required(login_url='/accounts/login/')
 def search_results(request):
 
     if 'site' in request.GET and request.GET["site"]:
@@ -125,7 +130,7 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse("user_login"))
+    return HttpResponseRedirect(reverse("siteToday"))
 
 
 def register(request):
@@ -196,7 +201,8 @@ def my_profile(request):
     
 
     return render(request, 'my-profile.html', { "site": site, "user_profile": user_profile},)
-
+    
+@login_required(login_url='/accounts/login/')
 def site_rate(request, pk):
     site = Site.objects.get(pk=pk)
     current_user = request.user
@@ -234,7 +240,7 @@ def site_rate(request, pk):
                
                 if request.user.is_authenticated:    
                    user_id = request.user.id           
-                   has_voted = Rate.objects.all().filter(post_id=post_id,user_id=user_id)
+                   has_voted = Rate.objects.all().filter(post_id=site.id,user_id=user_id)
                    if has_voted:                
                         messages.error(request,'You have already voted for this post')                
                         return redirect('site_rate', site.id)                                    
@@ -257,4 +263,17 @@ def site_rate(request, pk):
         return render(request, 'all-sites/site.html', context)
 
     return render(request,'all-sites/today-sites.html')
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+   
     
+class SiteViewSet(viewsets.ModelViewSet):
+    queryset = Site.objects.all()
+    serializer_class = SiteSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer    

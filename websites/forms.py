@@ -1,13 +1,13 @@
 from .models import Site
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import *
 
 
 class NewSiteForm(forms.ModelForm):
     class Meta:
         model = Site
-        exclude = ['developer', 'pub_date']
+        exclude = ['developer', 'pub_date', 'usability', 'content', 'creativity', 'design', 'vote_submissions','tags']
         widgets = {
             'tags': forms.CheckboxSelectMultiple(),
         }
@@ -31,6 +31,10 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ("profile_pic",)
+        fields = ("profile_pic", "phone_number", "bio",)
 
+class RatingsForm(forms.ModelForm):
+    class Meta:
+        model = Rate
+        fields = ['design', 'usability', 'content', 'creativity']
 

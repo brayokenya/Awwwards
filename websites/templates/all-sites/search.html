@@ -13,14 +13,18 @@
     <div class="row">
 
         {% if websites %} {% for site in websites %}
-        <div class="col-sm-6 col-md-3">
-            <h1>{{site.title}}</h1>
-            <h3>{{site.url}}</h3>
-            <p>Posted {{site.pub_date|timesince}} by {{site.developer.first_name}}</p>
+        <div class="column" style="width: 37.2rem;">
 
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <img src="{{site.image.url}}" class="img-responsive" alt="Image">
+            <img class="card-img-top" style="width: 355px; height: 400px;" src="{{site.image.url}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{site.title}}</h5>
+                <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                <p class="card-text">Developer: {{site.developer}}</p>
+                <p class="card-text">Published on: {{site.pub_date}}</p>
+                <p class="card-text">Tag: {{site.tag}}</p>
+
+                <a href="{{site.url}}" class="btn btn-primary">Visit {{site.developer}}'s Site</a>
+            </div>
         </div>
         {% endfor %} {% endif %}
     </div>

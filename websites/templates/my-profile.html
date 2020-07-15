@@ -1,56 +1,28 @@
 {%extends 'all-sites/base.html'%} {% block content %} {{block.super}}
 
-<div class="container home-pg">
-    
-
-    <div class="row">
-
-        <div class="col-xs-1"></div>
-        <div class="col-xs-4">
-            {% include 'partials/_alerts.html' %}
-            <div class="container">
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>{{request.user.first_name}}'s Profile</h4>
-            </div>
-            <div class="panel-body">
-                
-                <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8">
-                    <div class="container">
-                        <h2>{{site_item.developer}}</h2>
-
-                    </div>
-                    <hr>
-                    
-                    
-                </div>
-            </div>
-        </div>
+  <div class="card mb-3" style="max-width: 100%;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{{user_profile.profile_pic.url}}" class="card-img" alt="profile-img">
     </div>
-</div>
-            <p> <span class="text-muted">Bio: </span>{{user_profile.bio}}</p>
-            <p class="card-text">Contact: {{user_profile.phone_number}}</p>
-            <h5 class="text-muted">Developer: <span class="bolden">{{request.user}}</span></h5>
-            <h5 class="text-muted">Profile Picture <img src="{{user_profile.profile_pic.url}}"></h5>
-            <h3 class="text-muted">Sites Uploaded</h3>
-
-        
-            <ul class="container details">
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{request.user.first_name}}'s Profile</h5>
+        <p class="card-text-text-muted">Bio :{{user_profile.bio}}</p>
+        <p class="card-text">Phone Number :{{user_profile.phone_number}}</p>
+        <p class="card-text">Username :{{request.user}}</p>
+        <small class="text-muted">Sites Uploaded</small></p>
+        <ul class="container details">
                         
-                        {% for site_item in site %}
-                        <li>
-                            <p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{site_item.title}}</p>
-                            
-                        </li>
-                        {%endfor%} 
-            </ul>        
-
-
-
-        </div>
+            {% for site_item in site %}
+            <p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{site_item.title}}</p>
+        
+            {%endfor%} 
+        </ul>        
+      
     </div>
+  </div>
 </div>
-
 
 {% endblock %}
+
