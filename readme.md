@@ -1,6 +1,6 @@
 [![codebeat badge](https://codebeat.co/badges/b41c7300-bc2e-4775-b8cb-9f69ea32a81a)](https://codebeat.co/projects/github-com-brayokenya-awwwards-master)
 
-# Instag
+# Awwwards
 
 #### A Django awwwards clone
 
