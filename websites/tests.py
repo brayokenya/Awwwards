@@ -1,7 +1,7 @@
 from django.test import TestCase
 from .models import Dev,Site,tags
 
-# Create your tests here.
+
 class DevTestClass(TestCase):
 
     # Set up method

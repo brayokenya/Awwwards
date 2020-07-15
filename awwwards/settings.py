@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import django_heroku
 import os
 import cloudinary
-import dj_database_url
+import dj_database_url 
 from decouple import config, Csv
 
 
@@ -64,7 +64,7 @@ STATICFILES_DIRS = (
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ps#lbc!5r4*paj83x66v*0f9#k_%g2l6sdt*l7^&vbq0&m@2(w'
+SECRET_KEY='ps#lbc!5r4*paj83x66v*0f9#k_%g2l6sdt*l7^&vbq0&m@2(w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

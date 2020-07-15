@@ -7,9 +7,11 @@ from .models import *
 class NewSiteForm(forms.ModelForm):
     class Meta:
         model = Site
+        fields = ['title', 'image', 'url']
         exclude = ['developer', 'pub_date', 'usability', 'content', 'creativity', 'design', 'vote_submissions','tags']
         widgets = {
             'tags': forms.CheckboxSelectMultiple(),
+
         }
 class UserForm(forms.ModelForm):
     first_name = forms.CharField(label=False, widget=forms.TextInput(attrs={"class":"form-control mb-3",
