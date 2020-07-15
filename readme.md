@@ -8,7 +8,7 @@
 User can sign in to the application to start using.
 User can upload my websites to the application.
 User can view any profile with all websites.
-User can like a picture and leave a comment on it.
+User can Rate a website
 
 
 
