@@ -10,6 +10,9 @@ User can upload my websites to the application.
 User can view any profile with all websites.
 User can Rate a website
 
+## API ENDPOINTS
+
+[MyProfile Endpoint](https://awards111.herokuapp.com/myprofile/)
 
 
 ## Author
