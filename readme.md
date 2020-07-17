@@ -14,6 +14,8 @@ User can Rate a website
 
 [User Endpoint](https://awards111.herokuapp.com/users/)
 
+[Profile Endpoint](https://awards111.herokuapp.com/profiles/)
+
 
 ## Author
 [Brian Kiiru](https://github.com/brayokenya)
