@@ -12,7 +12,9 @@ User can Rate a website
 
 ## API ENDPOINTS
 
-[MyProfile Endpoint](https://awards111.herokuapp.com/myprofile/)
+[User Endpoint](https://awards111.herokuapp.com/users/)
+
+[Profile Endpoint](https://awards111.herokuapp.com/profiles/)
 
 
 ## Author
