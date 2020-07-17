@@ -85,7 +85,9 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_registration',
     'tinymce',
-    'bootstrap4'
+    'bootstrap4',
+    'rest_framework',
+    'rest_framework.authtoken'
 
     
 ]
