@@ -15,12 +15,25 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.first_name
 
+    def save_userprofile(self):
+        self.save()  
+
+    def delete_userprofile(self):
+        self.delete()
+
+    def update_bio(self, bio):
+        self.bio = bio
+        self.save()
+
+
 
 class tags(models.Model):
     name = models.CharField(max_length =30)
 
     def __str__(self):
         return self.name
+
+    
 
 class Site(models.Model):
     title = models.CharField(max_length =60)
