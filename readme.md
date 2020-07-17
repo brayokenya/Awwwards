@@ -11,7 +11,8 @@ User can view any profile with all websites.
 User can Rate a website
 
 ## API ENDPOINTS
-(https://awards111.herokuapp.com/myprofile/)
+
+[MyProfile Endpoint](https://awards111.herokuapp.com/myprofile/)
 
 
 ## Author
