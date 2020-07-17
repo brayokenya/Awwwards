@@ -26,12 +26,8 @@ class UserProfileTestClass(TestCase):
         tags.objects.all().delete()
         Site.objects.all().delete()
 
-    def test_get_site_today(self):
-        today_site = Site.todays_site()
-        self.assertTrue(len(today_site)>0)
 
     
-class UserProfileTestClass(TestCase):
     def setUp(self):
         self.user = User(first_name="brian", last_name="kiiru",
                          username="briankiiru", email="brian@gmail.com",)
